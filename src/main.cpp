@@ -4,9 +4,16 @@
 #include <sstream>
 using namespace std;
 
-void UserInterface(MovieTree& Movies); // Pre-declaring user-interface function
-void displayMenu(); // Displays menu options
+/* ======================================================================
+ * Pre-declaring user-interface functions
+========================================================================= */
+void UserInterface(MovieTree& Movies); 
+void displayMenu(); 
+/* ================================================================ */
 
+/* ======================================================================
+ * Main
+========================================================================= */
 int main(int argc, char *argv[] ) {
 
     MovieTree Movies;
@@ -36,15 +43,15 @@ int main(int argc, char *argv[] ) {
     }
     UserInterface(Movies);
 
-
     return 0;
 }
+/* ================================================================ */
 
 void UserInterface(MovieTree& Movies)
 {
     bool quit = false;
     string s_input;
-    int input;
+    UserSelection::Choices input;
 
     while(!quit)
     {
@@ -53,17 +60,17 @@ void UserInterface(MovieTree& Movies)
         getline(cin, s_input);
         try
         {
-            input = stoi(s_input);
+            input = static_cast<UserSelection::Choices>(stoi(s_input));
         }
         catch (exception& e)
         {
             // non-numeric input. trigger the default switch case.
-            input = 10;
+            input = UserSelection::Choices::_defualt;
         }
 
         switch (input)
         {
-            case 1:      // Find Movie
+            case UserSelection::Choices::findMovie:
             {
                 string MovieInput;
                 cout << "Enter title: " << endl;
@@ -72,7 +79,7 @@ void UserInterface(MovieTree& Movies)
                 break;
             }
 
-            case 2:        // Rent a Movie
+            case UserSelection::Choices::rentMovie:
             {
                 string RentInput;
                 cout << "Enter title: " << endl;
@@ -81,12 +88,12 @@ void UserInterface(MovieTree& Movies)
                 break;
             }
 
-            case 3: // Print Inventory
+            case UserSelection::Choices::printInventory:
             {
                 Movies.printMovieInventory();
                 break;
             }
-            case 4:
+            case UserSelection::Choices::removeMovieFromInventory:
             {
                 string DeleteInput;
                 cout << "Enter title:" << endl;
@@ -94,28 +101,30 @@ void UserInterface(MovieTree& Movies)
                 Movies.deleteMovie(DeleteInput);
                 break;
             }
-            case 5:
+            case UserSelection::Choices::countMovies:
             {
                 Movies.countMovies();
                 break;
             }
-            case 6:       // add city
+            case UserSelection::Choices::quit:       
             {
                 quit = true;
                 cout << "Goodbye! " << endl;
                 break;
             }
-
             default:     // invalid input
+            {
                 cout << "Invalid Input" << endl;
                 break;
+            }
         }
     }
 }
-
+/* ================================================================ */
 
 void displayMenu()
 {
+    cout << endl;
     cout << "======Main Menu======" << endl;
     cout << "1. Find a movie" << endl;
     cout << "2. Rent a movie" << endl;
@@ -124,3 +133,4 @@ void displayMenu()
     cout << "5. Count movies" << endl;
     cout << "6. Quit" << endl;
 }
+/* ================================================================ */

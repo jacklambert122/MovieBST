@@ -4,6 +4,24 @@
 #include <string>
 
 /* ======================================================================
+ * Namespace name: UserSelection
+ * Purpose: enumerate case/switch in handleUserInput with a non-public scope
+========================================================================= */
+namespace UserSelection
+{
+    enum class Choices
+    {
+        findMovie = 1,
+        rentMovie = 2,
+        printInventory = 3,
+        removeMovieFromInventory = 4,
+        countMovies = 5,
+        quit = 6,
+        _defualt = 7
+    };
+}
+
+/* ======================================================================
  * Class: MovieNode
  * Purpose: Node object to store in the binary search tree (BST). Each
  *          movie's info will be stored in one node.
@@ -60,7 +78,7 @@ private:
 
     /* ======================================================================
      * Purpose: Add movie to BST, at spot in tree alphabetically-sorted by 
-     *          title. 
+     *          title. Makes recursive implementation easier with UI handoff
      * @param currNode: 
      * param ranking: ranking of movie
      * @param title: title of movie
@@ -71,30 +89,32 @@ private:
     MovieNode* addMovieNodeHelper(MovieNode* currNode, int ranking, std::string title, int releaseYear, int quantity);
 
     /* ======================================================================
-     * Purpose: 
-     * @param 
-     * @return None
+     * Purpose: recursive function to search movie tree for a give movie title
+     * @param currNode : current node in movie tree
+     * @param title : movie to search for
+     * @return MovieNode (nullptr if not found)
     ========================================================================= */
     MovieNode* searchHelper(MovieNode* root, std::string title);
 
     /* ======================================================================
-     * Purpose: 
-     * @param 
-     * @return None
+     * Purpose: function to recursively count movies in movie tree
+     * @param currNode
+     * @return movie count
     ========================================================================= */
     int countMoviesHelper(MovieNode* root);
 
     /* ======================================================================
-     * Purpose: 
-     * @param 
-     * @return None
+     * Purpose: deletes a movie node from movie tree with given title
+     * @param curNode : node to start search from
+     * @param title : movie to delete
+     * @return MovieNode to delete
     ========================================================================= */
     MovieNode*  deleteMovieHelper(MovieNode* root, std::string title);
 
     /* ======================================================================
-     * Purpose: 
-     * @param 
-     * @return None
+     * Purpose: returns the min value in subtree given current node
+     * @param currNode
+     * @return MovieNode that is min 
     ========================================================================= */
     MovieNode* getMinValueHelper(MovieNode* root);
 
@@ -107,13 +127,19 @@ public:
     ~MovieTree();
 
     /* ======================================================================
-     * Purpose: print entire movie inventorie
+     * Purpose: print entire movie inventory
      * @param 
      * @return None
     ========================================================================= */
     void printMovieInventory();
 
-   
+     /* ======================================================================
+     * Purpose: print movies attributes
+     * @param MovieNode
+     * @return None
+    ========================================================================= */
+    void printMovieAttributes(MovieNode* CurrNode);
+
     /* ======================================================================
      * Purpose: UI for addMovieHandler
      * @param rating: IMDB rating of movie
@@ -124,10 +150,7 @@ public:
     ========================================================================= */
     void addMovieNode(int ranking, std::string title, int releaseYear, int quantity);
 
-    // Descr: Search the BST for the given title and
-    //    print that movie's info in the predefined
-    //    format. See 'Find a movie' in the manual. 
-    //  param title: title of node to find
+   
     /* ======================================================================
      * Purpose: Search the BST for the given title and print that movie's 
      *          info in the predefined format. 
@@ -136,15 +159,28 @@ public:
     ========================================================================= */
     void findMovie(std::string title);
 
-    // Descr: update the inventory to indicate a movie
-    //    has been rented and print predefined info.
-    //    See 'Rent a movie' in the manual. 
-    //  param title: title of node to rent
+     /* ======================================================================
+     * Purpose: Update the inventory to indicate a movie has been rented and 
+     *         print predefined info.
+     * @param title of node to rent
+     * @return None
+    ========================================================================= */
     void rentMovie(std::string title);
 
+    /* ======================================================================
+     * Purpose: Count movies in movie tree
+     * @param None
+     * @return None
+    ========================================================================= */
     void countMovies();
 
+    /* ======================================================================
+     * Purpose: Remove movie from movie tree
+     * @param title of node to delete
+     * @return None
+    ========================================================================= */
     void deleteMovie(std::string title);
+
 };
 
 #endif // MOVIETREE_HPP
